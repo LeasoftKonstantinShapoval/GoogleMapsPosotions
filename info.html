@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Map</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script src="https://unpkg.com/@googlemaps/markerclusterer/dist/index.min.js"></script>
+    <style type="text/css">
+        /* Always set the map height explicitly to define the size of the div
+         * element that contains the map. */
+        #map {
+            height: 100%;
+        }
+
+        /* Optional: Makes the sample page fill the window. */
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+    <script>
+        function initMap() {
+
+            let locations = [
+                {lat: 3.180967, lng: 101.715546, lableName: 'Title A', description: 'Title A<br>That place number 1<br>Have a lot of things regarding that place 1'},
+                {lat: 3.200848, lng: 101.616669, lableName: 'Title B', description: 'Title B<br>That place number 2<br>Have a lot of things regarding that place 2'},
+                {lat: 3.147372, lng: 101.597443, lableName: 'Title C', description: 'Title C<br>That place number 3<br>Have a lot of things regarding that place 3'},
+                {lat: 3.19125, lng: 101.710052, lableName: 'Title D', description: 'Title D<br>That place number 4<br>Have a lot of things regarding that place 4'},
+            ];
+
+            // The map, centered at 1 element
+            const map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 12,
+                center: locations[0],
+            });
+
+            // Create an info window to share between markers.
+            const infoWindow = new google.maps.InfoWindow();
+
+            for (let location of locations) {
+                const marker = new google.maps.Marker({
+                    position: location,
+                    map: map,
+                    title: `${location.description}`,
+                    description: location.description,
+                    icon: {
+                        url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
+                        labelOrigin: new google.maps.Point(15, 40),
+                        size: new google.maps.Size(32, 32),
+                        anchor: new google.maps.Point(1, 1)
+                    },
+                    label: {
+                        text: location.lableName,
+                        color: "#C70E20",
+                        fontWeight: "bold"
+                    }
+                });
+
+                marker.addListener("click", () => {
+                    infoWindow.close();
+                    infoWindow.setContent(marker.getTitle());
+                    infoWindow.open(marker.getMap(), marker);
+                });
+            }
+        }
+    </script>
+</head>
+<body>
+<div id="map"></div>
+
+<!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+<script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRXJv8QdEg4xU3Mbr-wafFpMXoMGphmWY&callback=initMap&v=weekly"
+        async
+></script>
+</body>
+</html>
